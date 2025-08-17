@@ -1,2 +1,5 @@
+[build.environment]
+  ZDK_API_KEY = "5CNXWQNYrGQOI2YVxVDrg3kuFq52yLLq6hvc0iXcAROjZ8nVjV3O_ylpAoHO6Jp6sa_zNCYuuSTNiV07IH1gXp7I"
+
 [build]
   command = "npm run server"
