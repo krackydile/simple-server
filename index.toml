@@ -1,16 +1,8 @@
 [functions]
   directory = "netlify/functions"
 
-[build.environment]
-  ZDK_API_KEY = "5CNXWQNYrGQOI2YVxVDrg3kuFq52yLLq6hvc0iXcAROjZ8nVjV3O_ylpAoHO6Jp6sa_zNCYuuSTNiV07IH1gXp7I"
-
-[dev.environment]
-  ZDK_API_KEY = "5CNXWQNYrGQOI2YVxVDrg3kuFq52yLLq6hvc0iXcAROjZ8nVjV3O_ylpAoHO6Jp6sa_zNCYuuSTNiV07IH1gXp7I"
-
 [build]
   command = "npm run server"
-  targetPort = 3000
 
 [dev]
   command = "npm run server"
-  targetPort = 3000

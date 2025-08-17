@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const port = 8888;
 const cors = require('cors');
 
 const path = require('path');
@@ -10,7 +11,8 @@ const ZDK_API_HOST = "dev.zu.casa";
 app.use(express.urlencoded({extended: false}))
 
 require('dotenv').config();
-const ZDK_API_KEY = process.env.ZDK_API_KEY;
+const ZDK_API_KEY = "5CNXWQNYrGQOI2YVxVDrg3kuFq52yLLq6hvc0iXcAROjZ8nVjV3O_ylpAoHO6Jp6sa_zNCYuuSTNiV07IH1gXp7I";
+// const ZDK_API_KEY = process.env.ZDK_API_KEY;
 if (!ZDK_API_KEY) {
     console.log("ZDK_API_KEY env variable must be defined!")
     process.exit(99);
@@ -124,6 +126,6 @@ app.get('/api/kick', async function (req, res) {
 
 /* istanbul ignore next */
 if (!module.parent) {
-    app.listen(3000);
-    console.log('Express started on port 3000');
+    app.listen(8888);
+    console.log('Express started on port 8888');
 }
