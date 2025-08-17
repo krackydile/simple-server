@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node index.js"
+    "server": "node netlify/functions/index.js"
   },
   "author": "Patryk Rogalski",
   "license": "ISC",

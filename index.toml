@@ -6,4 +6,3 @@
 
 [build]
   command = "npm run server"
-  targetPort = 3000
