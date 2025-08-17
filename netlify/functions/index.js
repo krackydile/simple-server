@@ -129,3 +129,5 @@ if (!module.parent) {
     app.listen(8888);
     console.log('Express started on port 8888');
 }
+
+exports.handler = serverless(app);
