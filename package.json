@@ -1,21 +1,27 @@
 {
-  "name": "simple-server",
+  "name": "netlify-express",
   "version": "1.0.0",
-  "description": "Shows an example how to fetch z ZDK token for a user",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node app.js"
-  },
-  "author": "Patryk Rogalski",
-  "license": "ISC",
+  "description": "",
+  "main": "index.js",
   "dependencies": {
-    "@netlify/functions": "^4.2.1",
-    "@types/express": "^5.0.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.21.2",
-    "node-fetch": "^2.7.0",
-    "serverless-http": "^3.2.0"
-  }
+    "express": "^4.16.4",
+    "netlify-lambda": "^1.4.3",
+    "serverless-http": "^1.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "NODE_ENV=development ./node_modules/.bin/netlify-lambda serve src",
+    "build": "NODE_ENV=production ./node_modules/.bin/netlify-lambda build src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owenconti/netlify-express.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owenconti/netlify-express/issues"
+  },
+  "homepage": "https://github.com/owenconti/netlify-express#readme"
 }
