@@ -4,6 +4,7 @@ const serverless = require('serverless-http');
 const fetch = require('node-fetch');
 const crypto = require('crypto');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
 
@@ -275,6 +276,10 @@ async function getAuthToken(id, nickname) {
         throw error;
     }
 }
+
+app.use(cors({
+    origin: '*'
+}));
 
 // Routes
 app.get('/', (req, res) => {
