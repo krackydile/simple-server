@@ -1,21 +1,5 @@
-# Route any /api/* requests to the function
 [[redirects]]
-  from = "/chi"
-  to = "/hello"
-  status = 200
-
-[build]
-  # If you also have a frontend, set publish accordingly (e.g. "frontend/build")
-  functions = "netlify/functions"
-  command = "npm run build" # or "echo Skipping build" if you don't need one
-  publish = "frontend/build"
-
-[dev]
-  # If you also have a frontend, set publish accordingly (e.g. "frontend/build")
-  functions = "netlify/functions"
-  command = "npm run build" # or "echo Skipping build" if you don't need one
-  publish = "frontend/build"
-
-[functions]
-  external_node_modules = ["express", "serverless-http", "cors", "node-fetch"]
-  node_bundler = "esbuild"
+  from = "/old-path"
+  to = "/new-path"
+  status = 301
+  force = true
