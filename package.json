@@ -1,27 +1,27 @@
 {
-  "name": "netlify-express",
+  "name": "simple-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "express": "^4.16.4",
-    "netlify-lambda": "^1.4.3",
-    "serverless-http": "^1.9.1"
-  },
-  "devDependencies": {},
   "scripts": {
-    "start": "NODE_ENV=development ./node_modules/.bin/netlify-lambda serve src",
-    "build": "NODE_ENV=production ./node_modules/.bin/netlify-lambda build src"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/owenconti/netlify-express.git"
+    "url": "git+https://github.com/krackydile/simple-server.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/owenconti/netlify-express/issues"
+    "url": "https://github.com/krackydile/simple-server/issues"
   },
-  "homepage": "https://github.com/owenconti/netlify-express#readme"
+  "homepage": "https://github.com/krackydile/simple-server#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "netlify-cli": "^23.1.4",
+    "netlify-lambda": "^2.0.16",
+    "serverless-http": "^3.2.0"
+  }
 }
