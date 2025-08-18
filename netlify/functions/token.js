@@ -103,21 +103,21 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '/../../../frontend/build/index.html'));
 });
 
-app.get('/api/me', function (req, res) {
+app.get('/me', function (req, res) {
     res.send(JSON.stringify({id: user.id, name: user.name}));
 });
 
-app.get('/api/token', async function (req, res) {
+app.get('/token', async function (req, res) {
     const result = await token(user.id, user.name)
     res.send(JSON.stringify({token: result.tokens[0]}));
 });
 
-app.get('/api/room', async function (req, res) {
+app.get('/room', async function (req, res) {
     const result = await room();
     res.send(JSON.stringify({room: result.rooms[0]}));
 });
 
-app.get('/api/kick', async function (req, res) {
+app.get('/kick', async function (req, res) {
     const result = await kick(req.body.id);
     res.send(JSON.stringify({room: result.rooms[0]}));
 });
