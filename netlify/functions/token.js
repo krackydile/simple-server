@@ -45,55 +45,6 @@ async function token(id, nickname) {
     return result.json();
 }
 
-async function room() {
-    const opts = {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            'Authorization':  'Bearer ' + ZDK_API_KEY,
-        },
-        body: JSON.stringify({
-            arguments: [
-                {
-                    metadata: {name: 'test room'},
-                    kind: 2,
-                    capacity:  32,
-                    retention: 86400000000000
-                }
-            ]
-        })
-    };
-
-    const result = await fetch('https://room.' + ZDK_API_HOST + '/room.rooms.private.v1.Service/Create', opts);
-    return result.json();
-}
-
-async function kick(userId) {
-    const opts = {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            'Authorization':  'Bearer ' + ZDK_API_KEY,
-        },
-        body: JSON.stringify({
-            arguments: [
-                {
-                   query: [
-                       {
-                           conditions: [{
-                               user_ids: [userId]
-                           }]
-                       }
-                   ]
-                }
-            ]
-        })
-    };
-
-    const result = await fetch('https://room.' + ZDK_API_HOST + '/room.members.private.v1.Service/Kick', opts);
-    return result.json();
-}
-
 app.use(cors({
     origin: '*'
 }));
@@ -107,10 +58,14 @@ app.get('/me', function (req, res) {
     res.send(JSON.stringify({id: user.id, name: user.name}));
 });
 
-app.get('/token', async function (req, res) {
-    const result = await token(user.id, user.name)
-    res.send(JSON.stringify({token: result.tokens[0]}));
-});
+export { token }
+
+export function token() {
+    app.get('/token', async function (req, res) {
+        const result = await token(user.id, user.name)
+        res.send(JSON.stringify({token: result.tokens[0]}));
+    });
+}
 
 app.get('/room', async function (req, res) {
     const result = await room();
@@ -129,4 +84,4 @@ if (!module.parent) {
     console.log('Express started on port 8888');
 }
 
-module.exports.handler = serverless(app);
+/* module.exports.handler = serverless(app); */
