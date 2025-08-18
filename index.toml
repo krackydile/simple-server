@@ -1,4 +1,16 @@
+# Route any /api/* requests to the function
+[[redirects]]
+  from = "/chi"
+  to = "/hello"
+  status = 200
+
 [build]
+  # If you also have a frontend, set publish accordingly (e.g. "frontend/build")
+  functions = "netlify/functions"
+  command = "npm run build" # or "echo Skipping build" if you don't need one
+  publish = "frontend/build"
+
+[dev]
   # If you also have a frontend, set publish accordingly (e.g. "frontend/build")
   functions = "netlify/functions"
   command = "npm run build" # or "echo Skipping build" if you don't need one
@@ -7,16 +19,3 @@
 [functions]
   external_node_modules = ["express", "serverless-http", "cors", "node-fetch"]
   node_bundler = "esbuild"
-
-# Route any /api/* requests to the function
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
-
-# Optional: SPA fallback so deep links go to your frontend
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
