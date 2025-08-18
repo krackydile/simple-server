@@ -3,6 +3,10 @@
   command = "npm run server"  # or echo if only functions
   publish = "frontend/build"  # if you have a frontend
 
+[dev]
+  functions = "netlify/functions"
+  command = "npm run server"  # or echo if only functions
+
 [functions]
   external_node_modules = ["express", "serverless-http", "cors", "node-fetch"]
   node_bundler = "esbuild"
