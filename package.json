@@ -2,10 +2,10 @@
   "name": "simple-server",
   "version": "1.0.0",
   "description": "Shows an example how to fetch z ZDK token for a user",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node netlify/functions/index.js"
+    "server": "node netlify/functions/api.js"
   },
   "author": "Patryk Rogalski",
   "license": "ISC",
