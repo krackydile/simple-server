@@ -1,35 +1,24 @@
-// netlify/functions/api.js
 const express = require('express');
+const app = express();
 const serverless = require('serverless-http');
 const cors = require('cors');
 const fetch = require('node-fetch');
-
-const app = express();
 const ZDK_API_HOST = "dev.zu.casa";
 
-// Middleware
+// middleware
 app.use(express.urlencoded({extended: false}));
-app.use(express.json());
 
-// Get API key from environment variables
+require('dotenv').config();
 const ZDK_API_KEY = process.env.ZDK_API_KEY;
 if (!ZDK_API_KEY) {
     console.log("ZDK_API_KEY env variable must be defined!");
-    // Don't exit in serverless - just log the error
+    // process.exit(99); (Don't exit in serverless - just log the error)
 }
 
-// Hardcoded user data
-const user = {
-    id: "5896f971-59f0-49b0-b358-c3596f169635", 
-    name: "hardcoded_user"
-};
+//Hardcoded user data (this can be replaced with anything)
+const user = {id: "5896f971-59f0-49b0-b358-c3596f169635", name: "hardcoded_user"};
 
-// CORS configuration
-app.use(cors({
-    origin: '*'
-}));
-
-// Utility functions
+//Authenticate user with ZDK backend
 async function createAuthToken(id, nickname) {
     const opts = {
         method: "POST",
@@ -48,15 +37,10 @@ async function createAuthToken(id, nickname) {
                 }
             ]
         })
-    };
-
-    try {
-        const result = await fetch('https://user.' + ZDK_API_HOST + '/user.tokens.private.v1.Service/Create', opts);
-        return await result.json();
-    } catch (error) {
-        console.error('Error creating auth token:', error);
-        throw error;
     }
+
+    const result = await fetch('https://user.' + ZDK_API_HOST + '/user.tokens.private.v1.Service/Create', opts);
+    return result.json();
 }
 
 async function createRoom() {
@@ -64,27 +48,22 @@ async function createRoom() {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
-            'Authorization': 'Bearer ' + ZDK_API_KEY,
+            'Authorization':  'Bearer ' + ZDK_API_KEY,
         },
         body: JSON.stringify({
             arguments: [
                 {
                     metadata: {name: 'test room'},
                     kind: 2,
-                    capacity: 32,
+                    capacity:  32,
                     retention: 86400000000000
                 }
             ]
         })
     };
 
-    try {
-        const result = await fetch('https://room.' + ZDK_API_HOST + '/room.rooms.private.v1.Service/Create', opts);
-        return await result.json();
-    } catch (error) {
-        console.error('Error creating room:', error);
-        throw error;
-    }
+    const result = await fetch('https://room.' + ZDK_API_HOST + '/room.rooms.private.v1.Service/Create', opts);
+    return result.json();
 }
 
 async function kickMember(userId) {
@@ -92,33 +71,31 @@ async function kickMember(userId) {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
-            'Authorization': 'Bearer ' + ZDK_API_KEY,
+            'Authorization':  'Bearer ' + ZDK_API_KEY,
         },
         body: JSON.stringify({
             arguments: [
                 {
-                    query: [
-                        {
-                            conditions: [{
-                                user_ids: [userId]
-                            }]
-                        }
-                    ]
+                   query: [
+                       {
+                           conditions: [{
+                               user_ids: [userId]
+                           }]
+                       }
+                   ]
                 }
             ]
         })
     };
 
-    try {
-        const result = await fetch('https://room.' + ZDK_API_HOST + '/room.members.private.v1.Service/Kick', opts);
-        return await result.json();
-    } catch (error) {
-        console.error('Error kicking member:', error);
-        throw error;
-    }
+    const result = await fetch('https://room.' + ZDK_API_HOST + '/room.members.private.v1.Service/Kick', opts);
+    return result.json();
 }
 
-// Routes
+app.use(cors({
+    origin: '*'
+}));
+
 app.get('/', function (req, res) {
     res.json({
         message: 'ZDK API Server running on Netlify!',
@@ -132,55 +109,22 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api/me', function (req, res) {
-    res.json({id: user.id, name: user.name});
+    res.send(JSON.stringify({id: user.id, name: user.name}));
 });
 
 app.get('/api/token', async function (req, res) {
-    try {
-        if (!ZDK_API_KEY) {
-            return res.status(500).json({error: 'ZDK_API_KEY not configured'});
-        }
-        
-        const result = await createAuthToken(user.id, user.name);
-        res.json({token: result.tokens[0]});
-    } catch (error) {
-        console.error('Token creation failed:', error);
-        res.status(500).json({error: 'Failed to create token'});
-    }
+    const result = await createAuthToken(user.id, user.name)
+    res.send(JSON.stringify({token: result.tokens[0]}));
 });
 
 app.get('/api/room', async function (req, res) {
-    try {
-        if (!ZDK_API_KEY) {
-            return res.status(500).json({error: 'ZDK_API_KEY not configured'});
-        }
-        
-        const result = await createRoom();
-        res.json({room: result.rooms[0]});
-    } catch (error) {
-        console.error('Room creation failed:', error);
-        res.status(500).json({error: 'Failed to create room'});
-    }
+    const result = await createRoom();
+    res.send(JSON.stringify({room: result.rooms[0]}));
 });
 
-// Changed to POST for kick endpoint since it needs body data
 app.post('/api/kick', async function (req, res) {
-    try {
-        if (!ZDK_API_KEY) {
-            return res.status(500).json({error: 'ZDK_API_KEY not configured'});
-        }
-        
-        const userId = req.body.id;
-        if (!userId) {
-            return res.status(400).json({error: 'User ID required in request body'});
-        }
-        
-        const result = await kickMember(userId);
-        res.json({result: result});
-    } catch (error) {
-        console.error('Kick member failed:', error);
-        res.status(500).json({error: 'Failed to kick member'});
-    }
+    const result = await kickMember(req.body.id);
+    res.send(JSON.stringify({room: result.rooms[0]}));
 });
 
 // Error handling middleware
